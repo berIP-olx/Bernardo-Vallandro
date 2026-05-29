@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Visual</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#000;
+    overflow:hidden;
+}
+
+/* LOGIN */
+
+#loginScreen{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:300px;
+    background:#111;
+    border-radius:15px;
+    padding:20px;
+    text-align:center;
+}
+
+#loginScreen h2{
+    color:red;
+    margin-bottom:15px;
+}
+
+#password{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    margin-bottom:10px;
+}
+
+#loginBtn{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:red;
+    color:white;
+    font-weight:bold;
+}
+
+/* PAINEL */
+
+#panel{
+    position:absolute;
+    width:360px;
+    height:330px;
+    left:100px;
+    top:100px;
+    background:black;
+    border-radius:15px;
+    overflow:hidden;
+    display:none;
+    opacity:1;
+}
+
+#topBar{
+    height:42px;
+    background:red;
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    cursor:grab;
+}
+
+.topBtn{
+    width:30px;
+    height:30px;
+    margin-right:5px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#minBtn{
+    background:gold;
+}
+
+#closeBtn{
+    background:darkred;
+    color:white;
+}
+
+#content{
+    display:flex;
+    height:calc(100% - 42px);
+}
+
+#menu{
+    width:70px;
+    background:#111;
+    padding-top:10px;
+}
+
+.menuBtn{
+    width:50px;
+    height:50px;
+    margin:10px auto;
+    background:red;
+    border-radius:10px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:22px;
+    cursor:pointer;
+}
+
+#main{
+    flex:1;
+    color:white;
+    padding:12px;
+    overflow:auto;
+}
+
+.tab{
+    display:none;
+}
+
+.tab.active{
+    display:block;
+}
+
+.option{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#111;
+    border-radius:10px;
+    padding:10px;
+    margin-bottom:10px;
+}
+
+.option input{
+    width:18px;
+    height:18px;
+}
+
+.valueBox{
+    width:60px;
+    height:35px;
+    border-radius:10px;
+    background:#111;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-bottom:10px;
+}
+
+.slider{
+    width:100%;
+    margin-bottom:10px;
+}
+
+/* CÍRCULO */
+
+#circle{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    border:2px solid red;
+    border-radius:50%;
+    width:0;
+    height:0;
+    display:none;
+    pointer-events:none;
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+
+<div id="loginScreen">
+
+    <h2>PAINEL</h2>
+
+    <input
+        type="password"
+        id="password"
+        placeholder="Senha">
+
+    <button id="loginBtn">
+        Entrar
+    </button>
+
+</div>
+
+<!-- PAINEL -->
+
+<div id="panel">
+
+    <div id="topBar">
+
+        <button
+            id="minBtn"
+            class="topBtn">
+            —
+        </button>
+
+        <button
+            id="closeBtn"
+            class="topBtn">
+            X
+        </button>
+
+    </div>
+
+    <div id="content">
+
+        <div id="menu">
+
+            <div
+                class="menuBtn"
+                onclick="showTab('tab1')">
+                🔫
+            </div>
+
+            <div
+                class="menuBtn"
+                onclick="showTab('tab2')">
+                👁️
+            </div>
+
+            <div
+                class="menuBtn"
+                onclick="showTab('tab3')">
+                🔑
+            </div>
+
+        </div>
+
+        <div id="main">
+
+            <!-- ABA 1 -->
+
+            <div
+                id="tab1"
+                class="tab active">
+
+                <div class="option">
+                    <span>Assistência Visual</span>
+                    <input type="checkbox">
+                </div>
+
+                <div class="option">
+                    <span>Indicador Avançado</span>
+                    <input type="checkbox">
+                </div>
+
+                <div class="option">
+                    <span>Exibir FOV</span>
+                    <input
+                        type="checkbox"
+                        id="showCircle">
+                </div>
+
+                <div
+                    id="sliderValue"
+                    class="valueBox">
+                    0
+                </div>
+
+                <input
+                    type="range"
+                    id="slider"
+                    class="slider"
+                    min="0"
+                    max="360"
+                    value="0">
+
+            </div>
+
+            <!-- ABA 2 -->
+
+            <div
+                id="tab2"
+                class="tab">
+
+                <div class="option">
+                    <span>Visual 1</span>
+                    <input type="checkbox">
+                </div>
+
+                <div class="option">
+                    <span>Visual 2</span>
+                    <input type="checkbox">
+                </div>
+
+                <div class="option">
+                    <span>Visual 3</span>
+                    <input type="checkbox">
+                </div>
+
+            </div>
+
+            <!-- ABA 3 -->
+
+            <div
+                id="tab3"
+                class="tab">
+
+                <div class="option">
+                    <span>Modo Especial</span>
+                    <input
+                        type="checkbox"
+                        id="specialMode">
+                </div>
+
+                <div class="option">
+                    <span>Opacidade</span>
+                </div>
+
+                <div
+                    id="opacityValue"
+                    class="valueBox">
+                    100%
+                </div>
+
+                <input
+                    type="range"
+                    id="opacitySlider"
+                    class="slider"
+                    min="20"
+                    max="100"
+                    value="100">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="circle"></div>
+
+<script>
+
+/* LOGIN */
+
+const loginBtn =
+document.getElementById("loginBtn");
+
+const panel =
+document.getElementById("panel");
+
+loginBtn.onclick = () => {
+
+    const senha =
+    document.getElementById("password").value;
+
+    if(senha === "FFZ"){
+
+        document
+        .getElementById("loginScreen")
+        .style.display = "none";
+
+        panel.style.display = "block";
+
+    }else{
+
+        alert("Senha incorreta");
+
+    }
+
+};
+
+/* ABAS */
+
+function showTab(id){
+
+    document
+    .querySelectorAll(".tab")
+    .forEach(tab=>{
+        tab.classList.remove("active");
+    });
+
+    document
+    .getElementById(id)
+    .classList.add("active");
+}
+
+/* FOV VISUAL */
+
+const slider =
+document.getElementById("slider");
+
+const sliderValue =
+document.getElementById("sliderValue");
+
+const circle =
+document.getElementById("circle");
+
+const showCircle =
+document.getElementById("showCircle");
+
+slider.addEventListener("input",()=>{
+
+    sliderValue.innerText =
+    slider.value;
+
+    circle.style.width =
+    slider.value + "px";
+
+    circle.style.height =
+    slider.value + "px";
+
+});
+
+showCircle.addEventListener("change",()=>{
+
+    circle.style.display =
+    showCircle.checked
+    ? "block"
+    : "none";
+
+});
+
+/* OPACIDADE */
+
+const opacitySlider =
+document.getElementById("opacitySlider");
+
+const opacityValue =
+document.getElementById("opacityValue");
+
+opacitySlider.addEventListener("input",()=>{
+
+    opacityValue.innerText =
+    opacitySlider.value + "%";
+
+    panel.style.opacity =
+    opacitySlider.value / 100;
+
+});
+
+/* MODO ESPECIAL */
+
+let specialMode = false;
+
+document
+.getElementById("specialMode")
+.addEventListener("change",(e)=>{
+
+    specialMode =
+    e.target.checked;
+
+    if(specialMode){
+
+        panel.style.display =
+        "none";
+
+    }
+
+});
+
+/* REABRIR */
+
+let taps = 0;
+let lastTap = 0;
+
+document.addEventListener(
+"touchstart",
+(e)=>{
+
+    const dedos =
+    specialMode ? 5 : 3;
+
+    if(
+        e.touches.length === dedos
+    ){
+
+        const now =
+        Date.now();
+
+        if(
+            now-lastTap < 400
+        ){
+            taps++;
+        }else{
+            taps = 1;
+        }
+
+        lastTap = now;
+
+        if(taps === 2){
+
+            panel.style.display =
+            "block";
+
+            document
+            .getElementById("content")
+            .style.display =
+            "flex";
+
+            taps = 0;
+        }
+    }
+});
+
+/* MINIMIZAR */
+
+document
+.getElementById("minBtn")
+.onclick = ()=>{
+
+    document
+    .getElementById("content")
+    .style.display =
+    "none";
+
+};
+
+/* FECHAR */
+
+document
+.getElementById("closeBtn")
+.onclick = ()=>{
+
+    panel.style.display =
+    "none";
+
+};
+
+/* ARRASTAR */
+
+const topBar =
+document.getElementById("topBar");
+
+let drag = false;
+let offsetX = 0;
+let offsetY = 0;
+
+topBar.addEventListener(
+"mousedown",
+(e)=>{
+
+    drag = true;
+
+    offsetX =
+    e.clientX -
+    panel.offsetLeft;
+
+    offsetY =
+    e.clientY -
+    panel.offsetTop;
+
+});
+
+document.addEventListener(
+"mousemove",
+(e)=>{
+
+    if(!drag) return;
+
+    panel.style.left =
+    (e.clientX-offsetX)
+    +"px";
+
+    panel.style.top =
+    (e.clientY-offsetY)
+    +"px";
+
+});
+
+document.addEventListener(
+"mouseup",
+()=>{
+
+    drag = false;
+
+});
+
+</script>
+
+</body>
+</html>
